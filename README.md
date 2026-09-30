@@ -282,7 +282,7 @@ git push -u origin main
 
 <div align="center">
 
-Part of the [Machine Learning Projects](https://github.com/shsarv/Machine-Learning-Projects) collection by [Sarvesh Kumar Sharma](https://github.com/shsarv)
+Part of the [Machine Learning Projects](https://github.com/shsarv/Machine-Learning-Projects) collection by [Suresh Kumar](https://github.com/sureshkumar002)
 
 ⭐ Star the main repo if this helped you!
 
