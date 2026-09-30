@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+
+# Local temp output
+/tmp/
+tmp/
+uploads/
+results/
+
+# Editors/OS
+.vscode/
+.DS_Store

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gender & Age Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-icon">◉</div>
+        <div class="brand-text">
+          <span class="brand-title">Gender &amp; Age Detection</span>
+          <span class="brand-subtitle">OpenCV</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item active" href="#">Home</a>
+        <a class="nav-item" href="#about">About</a>
+        <a class="nav-item" href="#models">Models</a>
+        <a class="nav-item" href="#samples">Samples</a>
+        <a class="nav-item" href="#">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Gender &amp; Age Detection</h1>
+          <p>
+            Detects faces in images or a live webcam feed and predicts each person’s gender and age range across 8 age buckets using pre-trained models loaded via OpenCV DNN.
+          </p>
+
+          <div class="badges">
+            <span>Python 3.7+</span>
+            <span>OpenCV DNN</span>
+            <span>Caffe</span>
+            <span>Adience</span>
+            <span>MIT</span>
+          </div>
+        </div>
+
+        <div class="result-card tilt-card reveal">
+          {% if image %}
+            <div class="result-head">
+              <span class="dot"></span>
+              <span>Detection Result</span>
+              <span class="count">1 face detected</span>
+            </div>
+            <div class="result-image-wrap">
+              <img src="{{ image }}" alt="Detected result" />
+            </div>
+            <div class="stats-row">
+              <div class="stat-box">
+                <span class="icon">♀</span>
+                <div>
+                  <label>Gender</label>
+                  <strong>{{ prediction.gender }}</strong>
+                </div>
+              </div>
+              <div class="stat-box">
+                <span class="icon">⏳</span>
+                <div>
+                  <label>Age Range</label>
+                  <strong>{{ prediction.age }} years</strong>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <div class="result-head">
+              <span class="dot"></span>
+              <span>Detection Result</span>
+            </div>
+            <div class="placeholder-box">
+              <span class="placeholder-caption">No image processed yet</span>
+            </div>
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="upload-panel">
+        <form id="uploadForm" action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data" class="upload-form">
+          <div class="upload-box">
+            <div class="upload-icon">📤</div>
+            <div class="upload-title">Upload an Image</div>
+            <div class="upload-subtitle">Choose an image file from your device</div>
+            <label class="file-btn" for="imageInput">Choose Image</label>
+            <input id="imageInput" type="file" name="image" accept="image/png, image/jpeg, image/jpg" required />
+            <div class="file-name" id="fileName">No file chosen</div>
+          </div>
+
+          <div class="or-divider"><span>or</span></div>
+
+          <div class="webcam-stack">
+            <button id="webcamBtn" type="button" class="secondary-btn">Use Webcam</button>
+            <div id="webcamWrapper" class="webcam-wrapper" hidden>
+              <video id="webcamVideo" autoplay playsinline muted></video>
+              <button id="captureBtn" type="button" class="primary-btn small-btn">Capture &amp; Detect</button>
+            </div>
+          </div>
+
+          <div class="helper">Supported formats: JPG, PNG, JPEG</div>
+          <button type="submit" class="primary-btn">Detect</button>
+        </form>
+      </section>
+
+      <section class="features" id="about">
+        <div class="feature-card tilt-card reveal">
+          <div class="feature-icon">⚡</div>
+          <h3>Real-time Detection</h3>
+          <p>Works with images or live webcam feed.</p>
+        </div>
+        <div class="feature-card tilt-card reveal">
+          <div class="feature-icon">🎯</div>
+          <h3>Accurate Predictions</h3>
+          <p>Uses pre-trained deep learning models for high accuracy.</p>
+        </div>
+        <div class="feature-card tilt-card reveal">
+          <div class="feature-icon">🛠️</div>
+          <h3>No Training Required</h3>
+          <p>Leveraging pre-trained models via OpenCV DNN.</p>
+        </div>
+        <div class="feature-card tilt-card reveal">
+          <div class="feature-icon">✅</div>
+          <h3>Simple &amp; Easy to Use</h3>
+          <p>Clean interface with one-click detection.</p>
+        </div>
+      </section>
+
+      <section class="details-grid" id="models">
+        <div class="info-box tilt-card reveal">
+          <div class="section-title">How It Works</div>
+          <ol>
+            <li>Detect faces using TensorFlow SSD model</li>
+            <li>Crop face and preprocess the image</li>
+            <li>Predict gender using Caffe CNN model</li>
+            <li>Predict age using Caffe CNN model</li>
+            <li>Display results with bounding boxes</li>
+          </ol>
+        </div>
+
+        <div class="info-box tilt-card reveal">
+          <div class="section-title">The Three Models</div>
+          <div class="model-list">
+            <div class="model-item">
+              <span class="mini-badge">Face Detector</span>
+              <p>TensorFlow SSD</p>
+            </div>
+            <div class="model-item">
+              <span class="mini-badge">Gender Net</span>
+              <p>Caffe CNN</p>
+            </div>
+            <div class="model-item">
+              <span class="mini-badge">Age Net</span>
+              <p>Caffe CNN</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box tilt-card reveal" id="samples">
+          <div class="section-title">Sample Predictions</div>
+          <div class="sample-grid">
+            <img src="{{ url_for('static', filename='images/female.png') }}" alt="sample female" class="reveal-img" />
+            <img src="{{ url_for('static', filename='images/male.png') }}" alt="sample male" class="reveal-img" />
+            <img src="{{ url_for('static', filename='images/kid.png') }}" alt="sample kid" class="reveal-img" />
+            <img src="{{ url_for('static', filename='images/minion.png') }}" alt="sample minion" class="reveal-img" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Gender &amp; Age Detection</div>
+      <div>OpenCV</div>
+      <div>Built with Flask</div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
